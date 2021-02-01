@@ -16,7 +16,7 @@ public class CodisDataSource {
 	    @Value("${spring.codis.zk-proxy-dir}")
 	    private String zkProxyDir;
 
-	    @Value("${spring.codis.password}")
+	    @Value("${spring.codis.password:}")
 	    private String password;
 
 	    @Value("${spring.codis.timeout}")
@@ -46,7 +46,11 @@ public class CodisDataSource {
 	        poolConfig.setMaxWaitMillis(max_wait);
 	        poolConfig.setBlockWhenExhausted(false); //连接耗尽的时候，是否阻塞，false 会抛出异常，true 阻塞直到超时。默认为true。
 
-	        JedisResourcePool pool = RoundRobinJedisPool.create().poolConfig(poolConfig)
+	        JedisResourcePool pool = (null == password || password.isEmpty())? 
+	        		RoundRobinJedisPool.create().poolConfig(poolConfig)
+	                .curatorClient(zkAddr, timeout)
+	                .zkProxyDir(zkProxyDir).build()
+	        		: RoundRobinJedisPool.create().poolConfig(poolConfig)
 	                .curatorClient(zkAddr, timeout)
 	                .password(password).zkProxyDir(zkProxyDir).build();
 

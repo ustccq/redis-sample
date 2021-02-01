@@ -2,6 +2,7 @@ package com.watson.techlab.dep.redis.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -58,6 +59,7 @@ public class CacheUtil {
      * @return
      * @throws Exception 
      */
+    @Bean
     public Jedis getCacheClient() throws Exception{
 
         Jedis jedis = null;
