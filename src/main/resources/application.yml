@@ -66,5 +66,5 @@ spring:
       # 在jedispool中最小的idle状态(空闲的)的jedis实例的个数
       min-idle: 5
 
-  # 指定缓存策略(1--->redis; 2--->codis)
-  cache.index: 2
+  # 指定缓存策略(1--->redis; 2 --->redis cluster; 3--->codis)
+  cache.index: 3

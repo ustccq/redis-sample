@@ -54,26 +54,29 @@ public class CacheUtil {
         return redisTemplate;
     }
 
+    public boolean isCluster() {
+    	return 2 == cache_index;
+    }
     /**
      * 获取原生redis/codis client
      * @return
      * @throws Exception 
      */
-    @Bean
     public Jedis getCacheClient() throws Exception{
-
         Jedis jedis = null;
         if(cache_index==1){  // jedis 1
             jedis = jedisPool.getResource();
             jedis.select(redis_database);  // 设置默认库
-        }else if(cache_index==2){  // codis 2
+        }else if(cache_index==3){  // codis 3
             jedis = jedisResourcePool.getResource();
             jedis.select(codis_database);  // 设置默认库
-        }else if(cache_index==3){  // jedis cluster 3
-        	
         }else {  // exception
-            throw new Exception("please select index in {1:redis,2:codis} ! your select index is : "+cache_index);
+            throw new Exception("please select index in {1:redis,3:codis} ! your select index is : "+cache_index);
         }
         return jedis;
+    }
+    
+    public JedisCluster getCacheCluster() {
+    	return jedisCluster;
     }
 }
